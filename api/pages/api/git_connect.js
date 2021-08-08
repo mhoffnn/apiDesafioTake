@@ -1,7 +1,8 @@
 import { Octokit } from "octokit";
 
 async function git_connect(request, response) {
-    const octokit = new Octokit({ auth: `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` });
+    const octokit = new Octokit();
+
     const login = await octokit.request('GET /users/{username}', {
         username: 'takenet'
     })
