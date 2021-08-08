@@ -1,26 +1,35 @@
 import { Octokit } from "octokit";
 
 async function git_connect(request, response) {
-    const octokit = new Octokit();
 
+    const octokit = new Octokit({ auth: `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` });
     const user = await octokit.request('GET /orgs/{username}', {
         username: 'takenet'
     })
 
     const repos = await octokit.request('get /orgs/{org}/repos', {
         org: 'takenet',
-
     })
 
-    const date_repo = repos.find(repo => repo.data.created_at)
-
-    const dynamicDate = new Date();
+    var repository = {};
+    var count = 0;
+    for (let i = 0, j = 0; count < 5; i++, j++) {
+        if (repos.data[i].language == "C#") {
+            repository[j] = {
+                name: repos.data[i].name,
+                desc: repos.data[i].description,
+                language: repos.data[i].language,
+                date: repos.data[i].created_at
+            };
+            count++;
+        }
+    }
 
     response.setHeader('Cache-control', 's-maxage=10, stale-while-revalidate');
 
     response.json({
         avatar: user.data.avatar_url,
-        repos: repos.data,
+        repository: repository,
     });
 }
 
