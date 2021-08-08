@@ -13,7 +13,7 @@ async function git_connect(request, response) {
 
     var repository = {};
     var count = 0;
-    for (let i = 0, j = 0; count < 5; i++, j++) {
+    for (let i = 0, j = 0; count < 5; i++) {
         if (repos.data[i].language == "C#") {
             repository[j] = {
                 name: repos.data[i].name,
@@ -22,6 +22,7 @@ async function git_connect(request, response) {
                 date: repos.data[i].created_at
             };
             count++;
+            j++;
         }
     }
 
